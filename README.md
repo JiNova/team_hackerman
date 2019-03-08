@@ -1,6 +1,5 @@
-## Team Members: Sushant Bansal, Chen Ju Hou, Andreas Brandner, Yuta Nakamura
-
-## Topic name: Buffer overflow exploit with shell injection
+### Team Members: Sushant Bansal, Chen Ju Hou, Andreas Brandner, Yuta Nakamura
+### Topic name: Buffer overflow exploit with shell injection
 
 ## Description:
 - Implement a server in C that reads data from a socket and writes it to memory with an unsafe memory operation
