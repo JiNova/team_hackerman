@@ -21,7 +21,7 @@
 - Server
 	- Usage: ./server.exec	
 	- Close all clients before exiting server! , otherwise reset terminal session before restarting server
-	- Hit <Ctrl> + <C> to close the server
+	- Hit < Ctrl > + < C > to close the server
 
 - Client
 	- Usage: ./client.exec <IP_SERVER>
