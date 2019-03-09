@@ -14,3 +14,15 @@
 - We will analyze the targeted system and find where we could inject shellcodes through our script
 - Send over the malicious payload to the targeted server which will give the attackers shell access.
 - Host on some cloud platform VM that will allow user to execute shell commands on the targeted machine after the exploit for demonstration.
+
+
+## Usage Notes:
+- Compile using the makefile provided
+- Server
+	- Usage: ./server.exec	
+	- Close all clients before exiting server! , otherwise reset terminal session before restarting server
+	- Hit <Ctrl> + <C> to close the server
+
+- Client
+	- Usage: ./client.exec <IP_SERVER>
+	- Send "exit" to server to quit client
