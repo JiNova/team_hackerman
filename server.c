@@ -13,9 +13,19 @@
 #define MAX_PENDING 5
 #define MAX_LINE 8
 
-void clear_buf(char *buf,int len);
+/*Prototype*/
+int server();
 
-int main(){
+void main(){
+  int STATUS = -1;
+  STATUS = server();
+  if(STATUS == 1)
+    printf("Fatal Error! Please reset terminal session and try again !\n");
+  else if(STATUS == 0)
+    printf("Server Exited Successfully\n");
+}
+
+int server(){
 
   struct sockaddr_in sin;
   char buf[MAX_LINE];
@@ -31,7 +41,7 @@ int main(){
   /* setup passive open */
   if ((s = socket(PF_INET, SOCK_STREAM, 0)) < 0) {
     perror("simplex-talk: socket");
-    exit(1);
+    return 1;
   }
  
   inet_ntop(AF_INET, &(sin.sin_addr), str, INET_ADDRSTRLEN);
@@ -39,7 +49,7 @@ int main(){
 
   if ((bind(s, (struct sockaddr *)&sin, sizeof(sin))) < 0) {
     perror("simplex-talk: bind");
-    exit(1);
+    return 1;
   }
   else
     printf("Server bind done.\n");
@@ -49,7 +59,7 @@ int main(){
   while(1) {
     if ((new_s = accept(s, (struct sockaddr *)&sin, &len)) < 0) {
       perror("simplex-talk: accept");
-      exit(1);
+      return 1;
     }
     printf("Server Listening.\n");
     while(len = recv(new_s, buf, sizeof(buf), 0)){
@@ -62,14 +72,8 @@ int main(){
     }
     close(new_s);
   }
+  return 0;
 }
-
-void clear_buf(char *buf,int len){
-  for(int i=0;i<len;i++){
-    buf[i] = 0;
-  }
-}
-
 
 // Stack Protection 
 // ASLR random

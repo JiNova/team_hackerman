@@ -11,7 +11,22 @@
 #define SERVER_PORT 5432
 #define MAX_LINE 8
 
+/*Prototype*/
+int client(int argc, char *argv[]);
+
 int main(int argc, char * argv[]){
+  int STATUS = 1;
+  STATUS = client(argc, argv);
+  if (STATUS == 0){
+    printf("Client Exited Successfully\n");
+    exit(0);  
+  }
+  else
+    printf("Error Occured! Please Reconnect to server\n"); 
+  exit(1);  
+}
+
+int client(int argc, char *argv[]){
   FILE *fp;
   struct hostent *hp;
   struct sockaddr_in sin;
@@ -52,7 +67,7 @@ int main(int argc, char * argv[]){
     {
       perror("simplex-talk: connect");
       close(s);
-      exit(1);
+      return -1;
     }
   else
     printf("Client connected.\n");
@@ -63,7 +78,7 @@ int main(int argc, char * argv[]){
     send(s, buf, len, 0);
     recv(s, r_buf, sizeof(buf), 0);
     if (strncmp(buf,"exit\n",5) == 0)
-      exit(0);
+      return 0;
     printf("%s\n", r_buf);
   }
 }
