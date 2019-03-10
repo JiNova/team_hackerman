@@ -7,7 +7,8 @@
 
 ## Crafting the vulnerable system:
 - Create a vulnerable environment in a vm through disabling protections such as ASLR
-- Disable ASLR with (tested on Ubuntu 18.04 64-bit): `echo "0" | sudo dd of=/proc/sys/kernel/randomize_va_space`
+- Disable ASLR temporarily with (tested on Ubuntu 18.04 64-bit): `echo "0" | sudo dd of=/proc/sys/kernel/randomize_va_space`
+- Disable ASLR permanently by adding `kernel.randomize_va_space = 0` to /etc/sysctl.conf
 
 
 ## Exploitation:
