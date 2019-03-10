@@ -1,15 +1,19 @@
-### Team Members: Sushant Bansal, Chen Ju Hou, Andreas Brandner, Yuta Nakamura
-### Topic name: Buffer overflow exploit with shell injection
+# Final Project: Buffer overflow exploit with shell injection
+
+## Team Members: 
+ - Sushant Bansal
+ - Andreas Brandner
+ - Chen-Ju Hou
+ - Yuta Nakamura
 
 ## Description:
 - Implement a server in C that reads data from a socket and writes it to memory with an unsafe memory operation
-- Implement client program that writes a malicious payload (e.g., code that exploits the server and spawns a shell) to the server's socket
+- Implement a client program that writes a malicious payload (e.g., code that exploits the server and spawns a shell) to the server's socket
 
 ## Crafting the vulnerable system:
-- Create a vulnerable environment in a vm through disabling protections such as ASLR
-- Disable ASLR temporarily with (tested on Ubuntu 18.04 64-bit): `echo "0" | sudo dd of=/proc/sys/kernel/randomize_va_space`
-- Disable ASLR permanently by adding `kernel.randomize_va_space = 0` to /etc/sysctl.conf
-
+- Create a vulnerable environment in a vm(We are using Ubuntu 16.04 64-bit) through disabling protections such as ASLR
+	- Disable ASLR temporarily with: `echo "0" | sudo dd of=/proc/sys/kernel/randomize_va_space` 
+	- Disable ASLR permanently by adding `kernel.randomize_va_space = 0` to /etc/sysctl.conf
 
 ## Exploitation:
 - Write a malicious script that allow attackers to exploit the server
