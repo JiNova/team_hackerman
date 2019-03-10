@@ -28,12 +28,16 @@ int main(){
   return 0;
 }
 
-void echo_msg(char * msg, char * response)
+void success()
+{
+  printf("YEAH!\n");
+}
+
+void echo_msg(const char * msg)
 {
   char cmd[128];
-  strcpy(cmd, msg);   /*unsafe memory operation >here<*/
 
-  if (strncmp("noecho", cmd, 6))
+  /*if (strncmp("noecho", msg, 6))
   {
     strcpy(response, msg);
     response[strlen(msg)] = 0;
@@ -42,7 +46,9 @@ void echo_msg(char * msg, char * response)
   {
     strcpy(response, "ACK");
     response[4] = 0;
-  }
+  }*/
+
+  strcpy(cmd, msg);   /*unsafe memory operation >here<*/
 }
 
 int server(){
@@ -93,9 +99,9 @@ int server(){
         end = 1;
         break;
       }
-      // send(new_s, "ACK",4, 0);
-      echo_msg(buf, response);
-      send(new_s, response, strlen(response), 0);
+      echo_msg(buf);
+      send(new_s, "ACK",4, 0);
+      //send(new_s, response, strlen(response), 0);
     }
     close(new_s);
   }
