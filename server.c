@@ -11,27 +11,49 @@
 
 #define SERVER_PORT 5432
 #define MAX_PENDING 5
-#define MAX_LINE 8
+#define MAX_LINE 1024
+#define CMD_LEN 1024
 
 /*Prototype*/
 int server();
 
-void main(){
+int main(){
   int STATUS = -1;
   STATUS = server();
   if(STATUS == 1)
     printf("Fatal Error! Please reset terminal session and try again !\n");
   else if(STATUS == 0)
     printf("Server Exited Successfully\n");
+
+  return 0;
+}
+
+void echo_msg(char * msg, char * response)
+{
+  char cmd[128];
+  strcpy(cmd, msg);   /*unsafe memory operation >here<*/
+
+  if (strncmp("noecho", cmd, 6))
+  {
+    strcpy(response, msg);
+    response[strlen(msg)] = 0;
+  }  
+  else
+  {
+    strcpy(response, "ACK");
+    response[4] = 0;
+  }
 }
 
 int server(){
 
   struct sockaddr_in sin;
-  char buf[MAX_LINE];
-  int len;
+  char end = 0;
+  unsigned int len;
   int s, new_s;
   char str[INET_ADDRSTRLEN];
+  char response[MAX_LINE];
+  char buf[MAX_LINE];
 
   /* build address data structure */
   bzero((char *)&sin, sizeof(sin));
@@ -56,19 +78,24 @@ int server(){
 
   listen(s, MAX_PENDING);
   /* wait for connection, then receive and print text */
-  while(1) {
+  while(!end) {
     if ((new_s = accept(s, (struct sockaddr *)&sin, &len)) < 0) {
       perror("simplex-talk: accept");
       return 1;
     }
     printf("Server Listening.\n");
-    while(len = recv(new_s, buf, sizeof(buf), 0)){
+    while((len = recv(new_s, buf, sizeof(buf), 0)) && !end ){
       // printf("LEN: %d\n", len);
-      printf("%s \n", buf);
+      printf("%s", buf);
       // clear_buf(buf,MAX_LINE);
-      if(strcmp(buf,"exit\n") == 0)
+      if(strncmp(buf,"exit", 4) == 0)
+      {
+        end = 1;
         break;
-      send(new_s, "ACK",4, 0);
+      }
+      // send(new_s, "ACK",4, 0);
+      echo_msg(buf, response);
+      send(new_s, response, strlen(response), 0);
     }
     close(new_s);
   }

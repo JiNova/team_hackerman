@@ -9,7 +9,7 @@
 #include <unistd.h>
 
 #define SERVER_PORT 5432
-#define MAX_LINE 8
+#define MAX_LINE 1024
 
 /*Prototype*/
 int client(int argc, char *argv[]);
@@ -27,7 +27,6 @@ int main(int argc, char * argv[]){
 }
 
 int client(int argc, char *argv[]){
-  FILE *fp;
   struct hostent *hp;
   struct sockaddr_in sin;
   char *host;
@@ -77,8 +76,10 @@ int client(int argc, char *argv[]){
     len = strlen(buf) + 1;
     send(s, buf, len, 0);
     recv(s, r_buf, sizeof(buf), 0);
-    if (strncmp(buf,"exit\n",5) == 0)
+    if (strncmp(buf,"exit",4) == 0)
       return 0;
-    printf("%s\n", r_buf);
+    printf("%s", r_buf);
   }
+
+  return 0;
 }
