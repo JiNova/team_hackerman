@@ -23,13 +23,13 @@
 
 
 ## Usage Notes:
-- Compile with: `gcc server.c -o server -fno-stack-protector -z execstack`, so the server won't have stack-protection and the stack will be executable
 - Server
+	- Compile with: `gcc server.c -o server -fno-stack-protector -z execstack`, so the server won't have stack-protection and the stack will be executable
 	- Usage: ./server.exec	
 	- Close all clients before exiting server! , otherwise reset terminal session before restarting server
 	- Hit < Ctrl > + < C > to close the server
-- Compile with makefile
 - Client
+	- Compile with makefile
 	- Usage: ./client.exec <IP_SERVER>
 	- Send "exit" to server to quit client
 	
