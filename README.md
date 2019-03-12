@@ -11,7 +11,7 @@
 - Implement a client program that writes a malicious payload (e.g., code that exploits the server and spawns a shell) to the server's socket
 
 ## Crafting the vulnerable system:
-- Create a vulnerable environment in a vm(We are using Ubuntu 16.04 64-bit) through disabling protections such as ASLR
+- Create a vulnerable environment in a vm(We are using Ubuntu 18.04 64-bit) through disabling protections such as ASLR
 	- Disable ASLR temporarily with: `echo "0" | sudo dd of=/proc/sys/kernel/randomize_va_space` 
 	- Disable ASLR permanently by adding `kernel.randomize_va_space = 0` to /etc/sysctl.conf
 
