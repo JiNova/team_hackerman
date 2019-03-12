@@ -67,6 +67,7 @@ The makefile disables stack protectors in the server.c.
 
 4. Write a .gdbinit file:
 This file reduces the amount of environmental variables we have and set the disassebly style to intel as opposed to AT&T which is the default.
+Setting the disassembly is not required to recreate but intel output format is more legible. 
 ```
 Server_sys $ cd ~
 Server_sys $ printf "unset env COLUMNS\nunset env LINES\nset disassembly-flavor intel" >> ~/.gdbinit  
