@@ -1,4 +1,4 @@
-CFLAGS = -Wall
+CFLAGS = -Wall -fno-stack-protector -z execstack
 CC = gcc
 
 source=$(wildcard *.c)
