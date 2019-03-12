@@ -272,6 +272,7 @@ buf += b"\x90"*(136-len(buf)) + ret_addr
 
 print(buf)
 ```
+The injected shellcode in this example tries to connect and forward a shell over TCP to IP address 10.0.2.2 (standard Gateway IP on a Virtualbox VM) on port 12345. So, before you deliver the payload, you would want to use netcat to listen for the reverse shell.
 
 8. Try it again! Exploit should work now
 
