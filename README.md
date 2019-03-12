@@ -8,7 +8,7 @@
 
 ## Description:
 - Implement a server in C that reads data from a socket and writes it to memory with an unsafe memory operation
-- Implement a client program that writes a malicious payload (e.g., code that exploits the server and spawns a shell) to the server's socket
+- Implement a client program that writes a malicious payload to spawn a reverse shell via TCP to the server's socket
 
 ## Crafting the vulnerable system:
 - Create a vulnerable environment in a vm(We are using Ubuntu 18.04 64-bit) through disabling protections such as ASLR
@@ -16,20 +16,20 @@
 	- Disable ASLR permanently by adding `kernel.randomize_va_space = 0` to /etc/sysctl.conf
 
 ## Exploitation:
-- Write a malicious script that allow attackers to exploit the server
-- We will analyze the targeted system and find where we could inject shellcodes through our script
-- Send over the malicious payload to the targeted server which will give the attackers shell access.
-- Host on some cloud platform VM that will allow user to execute shell commands on the targeted machine after the exploit for demonstration.
+- Server is being run by user root
+- Open netcat on own machine to catch reverse shell from server (e.g. `nc localhost -lp 12345` if shellcode will connect to port 12345)
+- Start client with payload, e.g. `python payload.py | ./client 0.0.0.0`
+- Shell with root access is now accessible in netcat
 
 
 ## Usage Notes:
-- Compile with: `gcc server.c -o server -fno-stack-protector -z execstack`, so the server won't have stack-protection and the stack will be executable
 - Server
+	- Compile with: `gcc server.c -o server -fno-stack-protector -z execstack`, so the server won't have stack-protection and the stack will be executable
 	- Usage: ./server.exec	
 	- Close all clients before exiting server! , otherwise reset terminal session before restarting server
 	- Hit < Ctrl > + < C > to close the server
-- Compile with makefile
 - Client
+	- Compile with makefile
 	- Usage: ./client.exec <IP_SERVER>
 	- Send "exit" to server to quit client
 	
