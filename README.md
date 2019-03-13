@@ -38,7 +38,7 @@
 
 ## Generate your payload!
 
-We used (http://shell-storm.org/shellcode/files/shellcode-907.php)[this code] to generate our payload. This python script generates a payload with the ip and port of the client which we would be listening through.
+We used [this code](http://shell-storm.org/shellcode/files/shellcode-907.php) to generate our payload. This python script generates a payload with the ip and port of the client which we would be listening through.
 
 ```
 def sockaddr():
